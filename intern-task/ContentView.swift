@@ -9,51 +9,90 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var isButtonPressed = false
+    @State private var text = ""
+    @State private var sliderValue = 50.0
 
+      @State private var voiceOverEnabled = false
+    @Environment(\.accessibilityEnabled) var accessibilityEnabled
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
+        
+        
+        
+       
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
+        
+            
+        ZStack {
+            Color(.blue).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            
+            VStack{
+                Text("Hi There!").bold().font(.system(size: 50)).accessibilityLabel("this is a text label which says Hi There!").foregroundColor(.white)
+                
+                
+                Button(action: {
+                    isButtonPressed.toggle()
+                }) {
+                    Text("Tap Me!")
+                        .padding()
+                        .foregroundColor(.black)
+                        .background(Color.white)
+                        .cornerRadius(10).padding(15)
+                        .accessibilityAction {
+                                    print("Custom accessibility action triggered!")
+                                }
+                }
+                .accessibilityLabel("this is a button")
+                .accessibilityHint("this button prints a text below")
+                if isButtonPressed{
+                    Text("button pressed")
+                        .accessibilityLabel("button is pressed")
+                }
+               
+                
+                
+                
+                
+               
+                    
+                Image(systemName:"accessibility").resizable() .aspectRatio(contentMode: .fit).frame(maxWidth: 120,maxHeight: 120).foregroundColor(.white).padding(15).accessibility(label: Text("accessiblity icon ")).accessibilityHint("this image does nothing")
+                
+                
+                VStack {
+                    Text("Slider Value: \(Int(sliderValue))").font(.system(size: 20)).bold().foregroundColor(.white).accessibilityLabel("this displays the current value of slider")
+                    Slider(value: $sliderValue, in: 0...100, step: 1)
+                        .padding()
+                        .accentColor(.red)
+                        .foregroundColor(.white)
+                        
+                        .accessibility(value: Text("the current value of slider is \(Int(sliderValue))"))
+                        .accessibilityLabel("this is a slider with value from 0 to 100")
+                    
+                    
+                    TextField("Enter text", text: $text)
+                                .padding()
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .accessibilityLabel("Text Field")
+                                .accessibilityValue(text)
+                                .accessibilityHint("Type your text here")
+                                .accessibilityAction {
+                                                print("TextField tapped")
+                                            }
+                }.padding(30)
+                    
+               
+                
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+               
             }
+            
+            
+            
         }
     }
 }
+    
+
 
 #Preview {
     ContentView()
