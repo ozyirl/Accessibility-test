@@ -78,6 +78,10 @@ struct ContentView: View {
                                 .accessibilityAction {
                                                 print("TextField tapped")
                                             }
+                                .onSubmit {
+                                                
+                                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                            }
                 }.padding(30)
                     
                
