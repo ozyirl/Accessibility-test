@@ -1,4 +1,4 @@
-#Title : A Research Study on Accessibility Implementation in SwiftUI
+Title : A Research Study on Accessibility Implementation in SwiftUI
 
 Application:-
 In my SwiftUI application, I've integrated various accessibility modifiers to improve usability for all users. These modifiers include-
